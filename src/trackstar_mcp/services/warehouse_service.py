@@ -15,7 +15,13 @@ class WareHouseService:
 
         return warehouse
 
-    def get_low_stock_inventory(self, warehouse_id: str) -> list[dict]:
+    def get_low_stock_inventory(self, warehouse_id: str) -> list[dict] | None:
+        
+        warehouse = self.get_warehouse(warehouse_id)
+
+        if warehouse is None:
+            return None
+            
         inventory = self.repository.get_inventory_by_warehouse(warehouse_id)
 
         low_stock_items = []
