@@ -1,0 +1,70 @@
+[
+  {
+    "id": "wh_001",
+    "name": "Newark Fulfillment Center",
+    "code": "NWK-01",
+    "status": "active",
+    "warehouse_type": "fulfillment_center",
+    "location": {
+      "address_line_1": "125 Logistics Parkway",
+      "address_line_2": null,
+      "city": "Newark",
+      "state": "New Jersey",
+      "postal_code": "07102",
+      "country": "US"
+    },
+    "contact": {
+      "name": "Operations Desk",
+      "email": "ops.newark@example.com",
+      "phone": "+1-555-0101"
+    },
+    "timezone": "America/New_York",
+    "capabilities": {
+      "receiving": true,
+      "shipping": true,
+      "returns": true,
+      "inventory": true
+    },
+    "operational_status": {
+      "receiving_status": "operational",
+      "shipping_status": "operational",
+      "returns_status": "operational"
+    },
+    "created_at": "2025-06-15T09:00:00Z",
+    "updated_at": "2026-10-05T14:30:00Z"
+  },
+  {
+    "id": "wh_002",
+    "name": "Dallas Distribution Hub",
+    "code": "DAL-01",
+    "status": "active",
+    "warehouse_type": "distribution_center",
+    "location": {
+      "address_line_1": "4800 Commerce Drive",
+      "address_line_2": null,
+      "city": "Dallas",
+      "state": "Texas",
+      "postal_code": "75201",
+      "country": "US"
+    },
+    "contact": {
+      "name": "Dallas Operations Desk",
+      "email": "ops.dallas@example.com",
+      "phone": "+1-555-0102"
+    },
+    "timezone": "America/Chicago",
+    "capabilities": {
+      "receiving": true,
+      "shipping": true,
+      "returns": true,
+      "inventory": true
+    },
+    "operational_status": {
+      "receiving_status": "operational",
+      "shipping_status": "operational",
+      "returns_status": "operational"
+    },
+    "created_at": "2025-08-20T10:00:00Z",
+    "updated_at": "2026-10-05T15:10:00Z"
+  }
+]

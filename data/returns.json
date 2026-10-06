@@ -1,0 +1,210 @@
+[
+  {
+    "id": "ret_001",
+    "warehouse_id": "wh_001",
+    "status": "open",
+    "reason": "Customer changed mind",
+    "customer_reference": "ORD-78241",
+    "created_at": "2026-10-02T11:20:00Z",
+    "updated_at": "2026-10-05T09:15:00Z",
+    "items": [
+      {
+        "inventory_id": "inv_001",
+        "sku": "TS-SHOE-001",
+        "quantity": 1,
+        "condition": "good"
+      }
+    ],
+    "destination": {
+      "type": "warehouse",
+      "warehouse_id": "wh_001"
+    },
+    "inspection": {
+      "required": false,
+      "completed": false,
+      "notes": null
+    }
+  },
+  {
+    "id": "ret_002",
+    "warehouse_id": "wh_001",
+    "status": "receiving",
+    "reason": "Damaged item",
+    "customer_reference": "ORD-78312",
+    "created_at": "2026-10-02T14:45:00Z",
+    "updated_at": "2026-10-05T10:20:00Z",
+    "items": [
+      {
+        "inventory_id": "inv_003",
+        "sku": "TS-JKT-001",
+        "quantity": 2,
+        "condition": "damaged"
+      }
+    ],
+    "destination": {
+      "type": "warehouse",
+      "warehouse_id": "wh_001"
+    },
+    "inspection": {
+      "required": true,
+      "completed": false,
+      "notes": null
+    }
+  },
+  {
+    "id": "ret_003",
+    "warehouse_id": "wh_001",
+    "status": "received",
+    "reason": "Wrong size",
+    "customer_reference": "ORD-77984",
+    "created_at": "2026-09-28T09:10:00Z",
+    "updated_at": "2026-10-01T16:30:00Z",
+    "items": [
+      {
+        "inventory_id": "inv_002",
+        "sku": "TS-BAG-001",
+        "quantity": 1,
+        "condition": "good"
+      }
+    ],
+    "destination": {
+      "type": "warehouse",
+      "warehouse_id": "wh_001"
+    },
+    "inspection": {
+      "required": false,
+      "completed": true,
+      "notes": "Item inspected and approved for restock."
+    }
+  },
+  {
+    "id": "ret_004",
+    "warehouse_id": "wh_001",
+    "status": "in-transit",
+    "reason": "Product defect",
+    "customer_reference": "ORD-78402",
+    "created_at": "2026-10-03T08:40:00Z",
+    "updated_at": "2026-10-05T08:50:00Z",
+    "items": [
+      {
+        "inventory_id": "inv_004",
+        "sku": "TS-BOT-001",
+        "quantity": 1,
+        "condition": "defective"
+      }
+    ],
+    "destination": {
+      "type": "warehouse",
+      "warehouse_id": "wh_001"
+    },
+    "inspection": {
+      "required": true,
+      "completed": false,
+      "notes": null
+    }
+  },
+  {
+    "id": "ret_005",
+    "warehouse_id": "wh_002",
+    "status": "open",
+    "reason": "Wrong item received",
+    "customer_reference": "ORD-78116",
+    "created_at": "2026-10-01T13:25:00Z",
+    "updated_at": "2026-10-05T11:40:00Z",
+    "items": [
+      {
+        "inventory_id": "inv_006",
+        "sku": "TS-SHOE-002",
+        "quantity": 2,
+        "condition": "good"
+      }
+    ],
+    "destination": {
+      "type": "warehouse",
+      "warehouse_id": "wh_002"
+    },
+    "inspection": {
+      "required": false,
+      "completed": false,
+      "notes": null
+    }
+  },
+  {
+    "id": "ret_006",
+    "warehouse_id": "wh_002",
+    "status": "received",
+    "reason": "Customer changed mind",
+    "customer_reference": "ORD-78021",
+    "created_at": "2026-09-29T10:15:00Z",
+    "updated_at": "2026-10-02T14:10:00Z",
+    "items": [
+      {
+        "inventory_id": "inv_007",
+        "sku": "TS-BAG-002",
+        "quantity": 1,
+        "condition": "good"
+      }
+    ],
+    "destination": {
+      "type": "warehouse",
+      "warehouse_id": "wh_002"
+    },
+    "inspection": {
+      "required": false,
+      "completed": true,
+      "notes": "Item passed inspection."
+    }
+  },
+  {
+    "id": "ret_007",
+    "warehouse_id": "wh_002",
+    "status": "receiving",
+    "reason": "Damaged item",
+    "customer_reference": "ORD-78451",
+    "created_at": "2026-10-04T09:30:00Z",
+    "updated_at": "2026-10-05T12:05:00Z",
+    "items": [
+      {
+        "inventory_id": "inv_009",
+        "sku": "TS-BOT-002",
+        "quantity": 1,
+        "condition": "damaged"
+      }
+    ],
+    "destination": {
+      "type": "warehouse",
+      "warehouse_id": "wh_002"
+    },
+    "inspection": {
+      "required": true,
+      "completed": false,
+      "notes": null
+    }
+  },
+  {
+    "id": "ret_008",
+    "warehouse_id": "wh_002",
+    "status": "cancelled",
+    "reason": "Return request cancelled",
+    "customer_reference": "ORD-77652",
+    "created_at": "2026-09-25T15:00:00Z",
+    "updated_at": "2026-09-27T10:00:00Z",
+    "items": [
+      {
+        "inventory_id": "inv_008",
+        "sku": "TS-JKT-002",
+        "quantity": 1,
+        "condition": "good"
+      }
+    ],
+    "destination": {
+      "type": "warehouse",
+      "warehouse_id": "wh_002"
+    },
+    "inspection": {
+      "required": false,
+      "completed": false,
+      "notes": null
+    }
+  }
+]

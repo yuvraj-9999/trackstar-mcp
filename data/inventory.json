@@ -1,0 +1,302 @@
+[
+  {
+    "id": "inv_001",
+    "warehouse_id": "wh_001",
+    "sku": "TS-SHOE-001",
+    "name": "Running Shoes",
+    "description": "Lightweight everyday running shoes",
+    "product_category": "Footwear",
+    "active": true,
+    "unit_cost": 42.5,
+    "currency": "USD",
+    "quantities": {
+      "on_hand": 120,
+      "committed": 105,
+      "fulfillable": 15,
+      "unfulfillable": 0,
+      "awaiting": 0
+    },
+    "reorder_point": 25,
+    "target_stock_level": 100,
+    "locations": [
+      {
+        "location_code": "A-01-03",
+        "quantity": 80
+      },
+      {
+        "location_code": "B-02-01",
+        "quantity": 40
+      }
+    ],
+    "last_restocked_at": "2026-09-20T10:30:00Z",
+    "updated_at": "2026-10-05T13:45:00Z"
+  },
+  {
+    "id": "inv_002",
+    "warehouse_id": "wh_001",
+    "sku": "TS-BAG-001",
+    "name": "Travel Backpack",
+    "description": "Water-resistant travel backpack with laptop compartment",
+    "product_category": "Bags",
+    "active": true,
+    "unit_cost": 58.0,
+    "currency": "USD",
+    "quantities": {
+      "on_hand": 80,
+      "committed": 30,
+      "fulfillable": 50,
+      "unfulfillable": 0,
+      "awaiting": 5
+    },
+    "reorder_point": 30,
+    "target_stock_level": 90,
+    "locations": [
+      {
+        "location_code": "A-02-01",
+        "quantity": 50
+      },
+      {
+        "location_code": "A-02-02",
+        "quantity": 30
+      }
+    ],
+    "last_restocked_at": "2026-09-25T08:15:00Z",
+    "updated_at": "2026-10-05T12:20:00Z"
+  },
+  {
+    "id": "inv_003",
+    "warehouse_id": "wh_001",
+    "sku": "TS-JKT-001",
+    "name": "Lightweight Jacket",
+    "description": "Packable lightweight jacket for outdoor activities",
+    "product_category": "Apparel",
+    "active": true,
+    "unit_cost": 64.75,
+    "currency": "USD",
+    "quantities": {
+      "on_hand": 25,
+      "committed": 22,
+      "fulfillable": 3,
+      "unfulfillable": 0,
+      "awaiting": 0
+    },
+    "reorder_point": 15,
+    "target_stock_level": 60,
+    "locations": [
+      {
+        "location_code": "C-01-02",
+        "quantity": 25
+      }
+    ],
+    "last_restocked_at": "2026-09-12T14:00:00Z",
+    "updated_at": "2026-10-05T11:50:00Z"
+  },
+  {
+    "id": "inv_004",
+    "warehouse_id": "wh_001",
+    "sku": "TS-BOT-001",
+    "name": "Hiking Boots",
+    "description": "Durable hiking boots designed for long trail use",
+    "product_category": "Footwear",
+    "active": true,
+    "unit_cost": 91.25,
+    "currency": "USD",
+    "quantities": {
+      "on_hand": 12,
+      "committed": 11,
+      "fulfillable": 1,
+      "unfulfillable": 0,
+      "awaiting": 0
+    },
+    "reorder_point": 12,
+    "target_stock_level": 50,
+    "locations": [
+      {
+        "location_code": "C-03-04",
+        "quantity": 12
+      }
+    ],
+    "last_restocked_at": "2026-08-30T09:45:00Z",
+    "updated_at": "2026-10-05T10:40:00Z"
+  },
+  {
+    "id": "inv_005",
+    "warehouse_id": "wh_001",
+    "sku": "TS-CAP-001",
+    "name": "Sports Cap",
+    "description": "Breathable sports cap for outdoor activities",
+    "product_category": "Accessories",
+    "active": true,
+    "unit_cost": 18.5,
+    "currency": "USD",
+    "quantities": {
+      "on_hand": 200,
+      "committed": 40,
+      "fulfillable": 160,
+      "unfulfillable": 0,
+      "awaiting": 10
+    },
+    "reorder_point": 40,
+    "target_stock_level": 150,
+    "locations": [
+      {
+        "location_code": "D-01-01",
+        "quantity": 120
+      },
+      {
+        "location_code": "D-01-02",
+        "quantity": 80
+      }
+    ],
+    "last_restocked_at": "2026-09-28T13:20:00Z",
+    "updated_at": "2026-10-05T09:30:00Z"
+  },
+  {
+    "id": "inv_006",
+    "warehouse_id": "wh_002",
+    "sku": "TS-SHOE-002",
+    "name": "Training Shoes",
+    "description": "Versatile training shoes for gym and cross-training",
+    "product_category": "Footwear",
+    "active": true,
+    "unit_cost": 47.25,
+    "currency": "USD",
+    "quantities": {
+      "on_hand": 150,
+      "committed": 60,
+      "fulfillable": 90,
+      "unfulfillable": 0,
+      "awaiting": 15
+    },
+    "reorder_point": 35,
+    "target_stock_level": 120,
+    "locations": [
+      {
+        "location_code": "A-01-01",
+        "quantity": 90
+      },
+      {
+        "location_code": "A-01-02",
+        "quantity": 60
+      }
+    ],
+    "last_restocked_at": "2026-09-29T11:00:00Z",
+    "updated_at": "2026-10-05T14:05:00Z"
+  },
+  {
+    "id": "inv_007",
+    "warehouse_id": "wh_002",
+    "sku": "TS-BAG-002",
+    "name": "Laptop Backpack",
+    "description": "Structured laptop backpack for daily commuting",
+    "product_category": "Bags",
+    "active": true,
+    "unit_cost": 62.5,
+    "currency": "USD",
+    "quantities": {
+      "on_hand": 75,
+      "committed": 25,
+      "fulfillable": 50,
+      "unfulfillable": 0,
+      "awaiting": 3
+    },
+    "reorder_point": 25,
+    "target_stock_level": 80,
+    "locations": [
+      {
+        "location_code": "B-02-01",
+        "quantity": 75
+      }
+    ],
+    "last_restocked_at": "2026-09-24T15:30:00Z",
+    "updated_at": "2026-10-05T13:10:00Z"
+  },
+  {
+    "id": "inv_008",
+    "warehouse_id": "wh_002",
+    "sku": "TS-JKT-002",
+    "name": "Rain Jacket",
+    "description": "Waterproof rain jacket for outdoor use",
+    "product_category": "Apparel",
+    "active": true,
+    "unit_cost": 72.0,
+    "currency": "USD",
+    "quantities": {
+      "on_hand": 60,
+      "committed": 15,
+      "fulfillable": 45,
+      "unfulfillable": 0,
+      "awaiting": 0
+    },
+    "reorder_point": 20,
+    "target_stock_level": 70,
+    "locations": [
+      {
+        "location_code": "C-01-01",
+        "quantity": 60
+      }
+    ],
+    "last_restocked_at": "2026-09-30T10:10:00Z",
+    "updated_at": "2026-10-05T12:45:00Z"
+  },
+  {
+    "id": "inv_009",
+    "warehouse_id": "wh_002",
+    "sku": "TS-BOT-002",
+    "name": "Trail Boots",
+    "description": "Lightweight boots designed for trail running and hiking",
+    "product_category": "Footwear",
+    "active": true,
+    "unit_cost": 96.0,
+    "currency": "USD",
+    "quantities": {
+      "on_hand": 18,
+      "committed": 14,
+      "fulfillable": 4,
+      "unfulfillable": 0,
+      "awaiting": 0
+    },
+    "reorder_point": 10,
+    "target_stock_level": 40,
+    "locations": [
+      {
+        "location_code": "C-03-02",
+        "quantity": 18
+      }
+    ],
+    "last_restocked_at": "2026-09-10T09:00:00Z",
+    "updated_at": "2026-10-05T11:25:00Z"
+  },
+  {
+    "id": "inv_010",
+    "warehouse_id": "wh_002",
+    "sku": "TS-CAP-002",
+    "name": "Running Cap",
+    "description": "Lightweight moisture-wicking running cap",
+    "product_category": "Accessories",
+    "active": true,
+    "unit_cost": 19.0,
+    "currency": "USD",
+    "quantities": {
+      "on_hand": 180,
+      "committed": 20,
+      "fulfillable": 160,
+      "unfulfillable": 0,
+      "awaiting": 8
+    },
+    "reorder_point": 35,
+    "target_stock_level": 140,
+    "locations": [
+      {
+        "location_code": "D-02-01",
+        "quantity": 100
+      },
+      {
+        "location_code": "D-02-02",
+        "quantity": 80
+      }
+    ],
+    "last_restocked_at": "2026-09-27T12:00:00Z",
+    "updated_at": "2026-10-05T10:55:00Z"
+  }
+]
