@@ -35,7 +35,14 @@ class WareHouseService:
 
         return low_stock_items
 
-    def get_pending_returns(self, warehouse_id: str) -> list[dict]:
+    def get_pending_returns(self, warehouse_id: str) -> list[dict] | None:
+
+        warehouse = self.get_warehouse(warehouse_id)
+
+        if warehouse is None:
+            return None
+
+
         returns = self.repository.get_returns_by_warehouse(warehouse_id)
 
         pending_statuses = {"open", "in-transit", "receiving"}

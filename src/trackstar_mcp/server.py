@@ -39,3 +39,26 @@ def find_low_stock_inventory(warehouse_id: str) -> list[dict] | None:
         any records.
     """
     return warehouse_service.get_low_stock_inventory(warehouse_id)
+
+@mcp.tool()
+def get_pending_returns(warehouse_id: str) -> list[dict] | None:
+    """
+     Find pending returns for a specific warehouse.
+
+    Args:
+        warehouse_id: The unique ID of the warehouse to investigate.
+
+    Returns:
+        A list of pending return records.
+        Returns null if the specified warehouse does not exist.
+
+    Notes:
+        Pending returns have one of these statuses:
+        open, in-transit, or receiving.
+
+        This tool only reads return data and does not modify
+        any records.
+
+    """
+
+    return warehouse_service.get_pending_returns(warehouse_id)
