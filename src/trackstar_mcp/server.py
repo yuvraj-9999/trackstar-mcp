@@ -131,47 +131,58 @@ def get_pending_returns(warehouse_id: str) -> list[dict] | None:
     return warehouse_service.get_pending_returns(warehouse_id)
 
 @mcp.tool()
-def investigate_warehouse(warehouse_id: str) -> dict | None:
+def analyze_warehouse(warehouse_id: str,) -> dict | None:
     """
-    Perform a comprehensive operational investigation of a warehouse.
+    Analyze the operational state of a specific warehouse.
 
     Args:
-        warehouse_id: The unique ID of the warehouse to investigate.
+        warehouse_id: The unique ID of the warehouse to analyze.
 
     Returns:
-        A dictionary containing three keys:
-        - warehouse: Full warehouse record
-        - low_stock_inventory: Items below reorder point
-        - pending_returns: Pending returns for the warehouse
-        Returns null if the warehouse ID does not exist.
+        A structured operational analysis containing warehouse
+        information, inventory analysis, return analysis,
+        inventory-return relationships, and operational findings.
+
+        Returns null if the specified warehouse does not exist.
 
     Notes:
-        This tool combines the functionality of:
-        • get_warehouse
-        • get_low_stock_inventory
-        • get_pending_returns
-
-        It provides a complete operational snapshot in a single call.
-
+        This tool only reads operational data and does not modify
+        any records.
     """
-    return warehouse_service.investigate_warehouse(warehouse_id)
+    return warehouse_service.analyze_warehouse(warehouse_id)
 
 @mcp.prompt(
-    name= "warehouse_operations_review",
-    description="Review a warehouse's operational state and identify issues that require human attention."
+    name="warehouse_operations_review",
+    description=(
+        "Review a warehouse's operational state and identify "
+        "issues that require human attention."
+    ),
 )
 def warehouse_operations_review(warehouse_id: str) -> str:
     return f"""
+Review the operational state of warehouse '{warehouse_id}'.
 
-    Review the operational state of warehouse '{warehouse_id}'.
+Use the warehouse analysis to identify the most important
+operational findings.
 
-    Focus on:
-    - inventory below reorder points
-    - pending returns
-    - relationships between inventory issues and returns
-    - issues that may require human attention
+Pay particular attention to:
+- inventory below reorder points
+- critically low inventory
+- returns that are still pending and cannot currently contribute
+  to replenishment
+- returns received in damaged condition
+- returns that have been successfully restocked and can contribute
+  to replenishment
+- relationships between inventory conditions and related returns
 
-    Prioritize findings by operational significance.
-    Do not assume that any recommended action has been approved.
-    
-    """
+For each important issue:
+- explain what is happening
+- explain why it matters
+- use the available evidence from the analysis
+
+Prioritize findings by operational significance rather than
+simply listing every record.
+
+Do not assume that any recommended action has been approved.
+Keep the human operator in the decision loop.
+"""

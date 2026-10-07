@@ -55,22 +55,6 @@ class WareHouseService:
 
         return pending_returns
 
-        
-    def investigate_warehouse(self, warehouse_id: str) -> dict | None:
-        warehouse = self.get_warehouse(warehouse_id)
-
-        if warehouse is None:
-            return None
-
-        low_stock_inventory = self.get_low_stock_inventory(warehouse_id)
-        pending_returns = self.get_pending_returns(warehouse_id)
-
-        return {
-            "warehouse": warehouse,
-            "low_stock_inventory": low_stock_inventory,
-            "pending_returns": pending_returns,
-        }
-
     def _get_inventory_severity(self, fulfillable: int, reorder_point: int) -> str:
         if fulfillable > reorder_point:
             return "healthy"
@@ -272,6 +256,85 @@ class WareHouseService:
 
         return findings
 
+    def _generate_warehouse_findings(self,inventory_analyses: list[dict],relationships: list[dict],) -> list[dict]:
+        findings = []
+
+        for inventory in inventory_analyses:
+            severity = inventory["severity"]
+            unit_label = "unit" if inventory["fulfillable"] == 1 else "units"
+
+            if severity == "critical":
+                findings.append(
+                    {
+                        "type": "inventory_shortage",
+                        "severity": "critical",
+                        "inventory_id": inventory["inventory_id"],
+                        "sku": inventory["sku"],
+                        "message": (
+                            f"{inventory['name']} has only "
+                            f"{inventory['fulfillable']} fulfillable {unit_label} "
+                            f"against a reorder point of "
+                            f"{inventory['reorder_point']}."
+                        ),
+                    }
+                )
+
+            elif severity == "low":
+                findings.append(
+                    {
+                        "type": "inventory_shortage",
+                        "severity": "medium",
+                        "inventory_id": inventory["inventory_id"],
+                        "sku": inventory["sku"],
+                        "message": (
+                            f"{inventory['name']} is below its reorder point "
+                            f"with {inventory['fulfillable']} fulfillable {unit_label} "
+                            f"against a reorder point of "
+                            f"{inventory['reorder_point']}."
+                        ),
+                    }
+                )
+
+        for relationship in relationships:
+            relationship_type = relationship["relationship"]
+
+            if relationship_type == "not_replenishing":
+                findings.append(
+                    {
+                        "type": "replenishment_issue",
+                        "severity": relationship["severity"],
+                        "inventory_id": relationship["inventory_id"],
+                        "sku": relationship["sku"],
+                        "return_id": relationship["return_id"],
+                        "message": relationship["reason"],
+                    }
+                )
+
+            elif relationship_type == "pending":
+                findings.append(
+                    {
+                        "type": "replenishment_pending",
+                        "severity": relationship["severity"],
+                        "inventory_id": relationship["inventory_id"],
+                        "sku": relationship["sku"],
+                        "return_id": relationship["return_id"],
+                        "message": relationship["reason"],
+                    }
+                )
+
+            elif relationship_type == "replenishing":
+                findings.append(
+                    {
+                        "type": "replenishment",
+                        "severity": "low",
+                        "inventory_id": relationship["inventory_id"],
+                        "sku": relationship["sku"],
+                        "return_id": relationship["return_id"],
+                        "message": relationship["reason"],
+                    }
+                )
+
+        return findings
 
     def analyze_warehouse(self, warehouse_id: str) -> dict | None:
         warehouse = self.get_warehouse(warehouse_id)
@@ -292,9 +355,17 @@ class WareHouseService:
 
             relationships.extend(relationship_findings)
 
+        findings = self._generate_warehouse_findings(
+            inventory_analyses,
+            relationships,
+        )
+
         return {
             "warehouse": warehouse,
             "inventory_analysis": inventory_analyses,
             "return_analysis": return_analyses,
             "inventory_return_relationships": relationships,
+            "findings": findings,
         }
+
+
