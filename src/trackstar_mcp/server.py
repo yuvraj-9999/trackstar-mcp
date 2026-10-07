@@ -62,3 +62,29 @@ def get_pending_returns(warehouse_id: str) -> list[dict] | None:
     """
 
     return warehouse_service.get_pending_returns(warehouse_id)
+
+@mcp.tool()
+def investigate_warehouse(warehouse_id: str) -> dict | None:
+    """
+    Perform a comprehensive operational investigation of a warehouse.
+
+    Args:
+        warehouse_id: The unique ID of the warehouse to investigate.
+
+    Returns:
+        A dictionary containing three keys:
+        - warehouse: Full warehouse record
+        - low_stock_inventory: Items below reorder point
+        - pending_returns: Pending returns for the warehouse
+        Returns null if the warehouse ID does not exist.
+
+    Notes:
+        This tool combines the functionality of:
+        • get_warehouse
+        • get_low_stock_inventory
+        • get_pending_returns
+
+        It provides a complete operational snapshot in a single call.
+
+    """
+    return warehouse_service.investigate_warehouse(warehouse_id)

@@ -57,7 +57,7 @@ class WareHouseService:
 
         
     def investigate_warehouse(self, warehouse_id: str) -> dict | None:
-        warehouse = self.get_warehouse_by_id(warehouse_id)
+        warehouse = self.get_warehouse(warehouse_id)
 
         if warehouse is None:
             return None
