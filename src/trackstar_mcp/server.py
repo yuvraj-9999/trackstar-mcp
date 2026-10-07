@@ -22,18 +22,33 @@ The operational model contains three primary entities:
    - inventory.warehouse_id references warehouse.id
    - inventory.id uniquely identifies the inventory record.
    - inventory.sku identifies the product.
-   - quantities.fulfillable represents inventory currently available
+   - inventory.onhand represents the total quantity physically on hand.
+   - inventory.committed represents inventory assigned to orders.
+   - inventory.unfulfillable represents inventory that cannot currently
+     be fulfilled.
+   - inventory.fulfillable represents inventory currently available
      to fulfill orders.
-   - Low stock is determined when:
+   - inventory.sellable represents inventory available to sales channels.
+   - inventory.awaiting represents inventory expected to arrive.
+   - Low stock is determined using the prototype's reorder point:
      fulfillable < reorder_point
 
 3. Returns
    - Represents a customer return associated with a warehouse.
    - return.warehouse_id references warehouse.id
-   - return.items[].inventory_id references inventory.id
-   - return.items[].sku identifies the associated product.
-   - Pending returns have one of these statuses:
-     open, in-transit, receiving.
+   - return.line_items[] contains the inventory items associated
+     with the return.
+   - return.line_items[].inventory_item_id references inventory.id.
+   - return.line_items[].sku identifies the associated product.
+   - return.shipments[] represents shipment information associated
+     with the return.
+   - return.shipments[].line_items[] identifies the inventory items
+     included in the shipment.
+   - receiving_details[] contains information recorded when returned
+     inventory is received, including quantity, condition, and
+     disposition.
+   - Pending returns currently have one of these statuses:
+     open, in-transit, or receiving.
 
 Relationships:
 
@@ -43,9 +58,17 @@ Warehouse
     │
     └── Returns
           ├── return.warehouse_id → warehouse.id
-          └── return.items[].inventory_id → inventory.id
+          └── return.line_items[].inventory_item_id → inventory.id
+          │
+          └── return.shipments[]
+                └── shipment.line_items[].inventory_item_id
+                    → inventory.id
 
-This resource describes the normalized data model only.
+The reorder_point and target_stock_level fields are prototype
+operational-analysis fields used by this MCP. They are not treated
+as Trackstar API fields.
+
+This resource describes the normalized operational data model.
 Operational records should be retrieved through the available tools.
 """
 

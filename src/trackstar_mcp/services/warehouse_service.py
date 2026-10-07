@@ -27,7 +27,7 @@ class WareHouseService:
         low_stock_items = []
 
         for item in inventory:
-            fulfillable = item["quantities"]["fulfillable"]
+            fulfillable = item["fulfillable"]
             reorder_point = item["reorder_point"]
 
             if fulfillable < reorder_point:
@@ -70,3 +70,29 @@ class WareHouseService:
             "low_stock_inventory": low_stock_inventory,
             "pending_returns": pending_returns,
         }
+
+    def _get_inventory_severity(self, fulfillable: int, reorder_point: int) -> str:
+        if fulfillable > reorder_point:
+            return "healthy"
+
+        if fulfillable == reorder_point:
+            return "at_reorder_point"
+
+        if fulfillable <= reorder_point * 0.25:
+            return "critical"
+
+        return "low"
+
+    def _get_return_severity(self, return_item: dict) -> str:
+        status = return_item["status"]
+
+        if status == "receiving":
+            return "high"
+
+        if status == "in-transit":
+            return "medium"
+
+        if status == "open":
+            return "medium"
+
+        return "low"
