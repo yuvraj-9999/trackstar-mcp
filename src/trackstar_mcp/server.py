@@ -6,6 +6,50 @@ mcp = MCPServer("Trackstar Warehouse Operations")
 
 warehouse_service = WareHouseService()
 
+@mcp.resource("trackstar://warehouse-model")
+def warehouse_model() -> str:
+    return """
+Trackstar Warehouse Operations Data Model
+
+The operational model contains three primary entities:
+
+1. Warehouse
+   - Represents a physical warehouse or distribution facility.
+   - Primary identifier: warehouse.id
+
+2. Inventory
+   - Represents a product's inventory state within a warehouse.
+   - inventory.warehouse_id references warehouse.id
+   - inventory.id uniquely identifies the inventory record.
+   - inventory.sku identifies the product.
+   - quantities.fulfillable represents inventory currently available
+     to fulfill orders.
+   - Low stock is determined when:
+     fulfillable < reorder_point
+
+3. Returns
+   - Represents a customer return associated with a warehouse.
+   - return.warehouse_id references warehouse.id
+   - return.items[].inventory_id references inventory.id
+   - return.items[].sku identifies the associated product.
+   - Pending returns have one of these statuses:
+     open, in-transit, receiving.
+
+Relationships:
+
+Warehouse
+    ├── Inventory
+    │     └── inventory.warehouse_id → warehouse.id
+    │
+    └── Returns
+          ├── return.warehouse_id → warehouse.id
+          └── return.items[].inventory_id → inventory.id
+
+This resource describes the normalized data model only.
+Operational records should be retrieved through the available tools.
+"""
+
+
 @mcp.tool()
 def list_warehouses() -> list[dict]:
     """List all warehouses avialable for operational investigation"""
@@ -88,3 +132,23 @@ def investigate_warehouse(warehouse_id: str) -> dict | None:
 
     """
     return warehouse_service.investigate_warehouse(warehouse_id)
+
+@mcp.prompt(
+    name= "warehouse_operations_review",
+    description="Review a warehouse's operational state and identify issues that require human attention."
+)
+def warehouse_operations_review(warehouse_id: str) -> str:
+    return f"""
+
+    Review the operational state of warehouse '{warehouse_id}'.
+
+    Focus on:
+    - inventory below reorder points
+    - pending returns
+    - relationships between inventory issues and returns
+    - issues that may require human attention
+
+    Prioritize findings by operational significance.
+    Do not assume that any recommended action has been approved.
+    
+    """
