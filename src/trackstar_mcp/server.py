@@ -9,69 +9,82 @@ warehouse_service = WareHouseService()
 @mcp.resource("trackstar://warehouse-model")
 def warehouse_model() -> str:
     return """
-Trackstar Warehouse Operations Data Model
+           Trackstar Warehouse Operations Data Model
 
-The operational model contains three primary entities:
+           The operational model contains three primary entities:
 
-1. Warehouse
-   - Represents a physical warehouse or distribution facility.
-   - Primary identifier: warehouse.id
+           1. Warehouse
+           - Represents a physical warehouse or distribution facility.
+           - Primary identifier: warehouse.id
 
-2. Inventory
-   - Represents a product's inventory state within a warehouse.
-   - inventory.warehouse_id references warehouse.id
-   - inventory.id uniquely identifies the inventory record.
-   - inventory.sku identifies the product.
-   - inventory.onhand represents the total quantity physically on hand.
-   - inventory.committed represents inventory assigned to orders.
-   - inventory.unfulfillable represents inventory that cannot currently
-     be fulfilled.
-   - inventory.fulfillable represents inventory currently available
-     to fulfill orders.
-   - inventory.sellable represents inventory available to sales channels.
-   - inventory.awaiting represents inventory expected to arrive.
-   - Low stock is determined using the prototype's reorder point:
-     fulfillable < reorder_point
+           2. Inventory
+           - Represents a product's inventory state within a warehouse.
+           - inventory.warehouse_id references warehouse.id
+           - inventory.id uniquely identifies the inventory record.
+           - inventory.sku identifies the product.
+           - inventory.onhand represents the total quantity physically on hand.
+           - inventory.committed represents inventory assigned to orders.
+           - inventory.unfulfillable represents inventory that cannot currently
+             be fulfilled.
+           - inventory.fulfillable represents inventory currently available
+             to fulfill orders.
+           - inventory.sellable represents inventory available to sales channels.
+           - inventory.awaiting represents inventory expected to arrive.
+           - Low stock in this prototype is determined using the
+             prototype-defined reorder point:
+             fulfillable < reorder_point
 
-3. Returns
-   - Represents a customer return associated with a warehouse.
-   - return.warehouse_id references warehouse.id
-   - return.line_items[] contains the inventory items associated
-     with the return.
-   - return.line_items[].inventory_item_id references inventory.id.
-   - return.line_items[].sku identifies the associated product.
-   - return.shipments[] represents shipment information associated
-     with the return.
-   - return.shipments[].line_items[] identifies the inventory items
-     included in the shipment.
-   - receiving_details[] contains information recorded when returned
-     inventory is received, including quantity, condition, and
-     disposition.
-   - Pending returns currently have one of these statuses:
-     open, in-transit, or receiving.
+           - The reorder_point field is a prototype operational-analysis
+             field and is not treated as a Trackstar API field.
 
-Relationships:
+           3. Returns
+           - Represents a customer return associated with a warehouse.
+           - return.warehouse_id references warehouse.id
+           - return.line_items[] contains the inventory items associated
+             with the return.
+           - return.line_items[].inventory_item_id references inventory.id.
+           - return.line_items[].sku identifies the associated product.
+           - return.shipments[] represents shipment information associated
+             with the return.
+           - return.shipments[].line_items[] identifies the inventory items
+             included in the shipment.
+           - receiving_details[] contains information recorded when returned
+             inventory is received, including quantity, condition, and
+             disposition.
+           - Pending returns currently have one of these statuses:
+             open, in-transit, or receiving.
 
-Warehouse
-    ├── Inventory
-    │     └── inventory.warehouse_id → warehouse.id
-    │
-    └── Returns
-          ├── return.warehouse_id → warehouse.id
-          └── return.line_items[].inventory_item_id → inventory.id
-          │
-          └── return.shipments[]
-                └── shipment.line_items[].inventory_item_id
-                    → inventory.id
+           Relationships:
 
-The reorder_point and target_stock_level fields are prototype
-operational-analysis fields used by this MCP. They are not treated
-as Trackstar API fields.
+           Warehouse
+               ├── Inventory
+               │     └── inventory.warehouse_id → warehouse.id
+               │
+               └── Returns
+                   ├── return.warehouse_id → warehouse.id
+                   └── return.line_items[].inventory_item_id → inventory.id
+                   └── return.shipments[]
+                           └── shipment.line_items[].inventory_item_id
+                                → inventory.id
 
-This resource describes the normalized operational data model.
-Operational records should be retrieved through the available tools.
-"""
+           The inventory-return relationship is used by this MCP to determine
+           how related returns affect an inventory situation.
 
+           Related returns may be classified as:
+           - replenishing: returned units have been restocked and can contribute
+             to inventory replenishment.
+           - pending: the return cannot currently be counted as replenishment,
+             such as when it is still in transit.
+           - not_replenishing: returned units should not currently be counted
+             as replenishment, such as units received in damaged condition.
+
+           The reorder_point and target_stock_level fields are prototype
+           operational-analysis fields used by this MCP. They are not treated
+           as Trackstar API fields.
+
+           This resource describes the normalized operational data model.
+           Operational records should be retrieved through the available tools.
+           """
 
 @mcp.tool()
 def list_warehouses() -> list[dict]:
