@@ -186,3 +186,6 @@ simply listing every record.
 Do not assume that any recommended action has been approved.
 Keep the human operator in the decision loop.
 """
+
+if __name__ == "__main__":
+    mcp.run()
