@@ -75,12 +75,45 @@ Operational records should be retrieved through the available tools.
 
 @mcp.tool()
 def list_warehouses() -> list[dict]:
-    """List all warehouses avialable for operational investigation"""
+    """
+    List all warehouses available for operational investigation.
+
+    Use this tool when the user wants to discover which warehouses
+    are available before selecting a specific warehouse to inspect.
+
+    Returns:
+        A list of warehouse records containing their identifiers
+        and available warehouse information.
+
+    Notes:
+        This tool only lists warehouses. It does not analyze
+        inventory, returns, or operational issues.
+        This tool is read-only and does not modify any records.
+    """
     return warehouse_service.get_warehouses()
 
 @mcp.tool()
 def get_warehouse(warehouse_id: str) -> dict | None:
-    """Get detailed information about a specific warehouse by its ID"""
+    """
+    Get detailed information about a specific warehouse.
+
+    Use this tool when the user wants information about a
+    warehouse itself, such as its identity, location, contact
+    information, capabilities, timezone, or operational status.
+
+    Args:
+        warehouse_id: The unique ID of the warehouse to retrieve.
+
+    Returns:
+        The warehouse record if the specified warehouse exists.
+        Returns null if no warehouse matches the provided ID.
+
+    Notes:
+        This tool retrieves warehouse metadata only. It does not
+        analyze inventory levels, returns, or operational issues.
+
+        This tool is read-only and does not modify any records.
+    """
     return warehouse_service.get_warehouse(warehouse_id)
 
 @mcp.tool()
@@ -89,43 +122,67 @@ def find_low_stock_inventory(warehouse_id: str) -> list[dict] | None:
     Find inventory items in a specific warehouse that are below
     their reorder point.
 
+    Use this tool when the user specifically wants to identify
+    low-stock inventory rather than perform a broader warehouse
+    investigation.
+
     Args:
         warehouse_id: The unique ID of the warehouse to investigate.
 
     Returns:
-         A list of inventory records that are below their reorder point.
-        Returns null if the warehouse ID does not exist.
+        A list of inventory records whose fulfillable quantity
+        is below their reorder point.
+
+        Returns null if the specified warehouse does not exist.
 
     Notes:
-        Low stock is determined by comparing the item's fulfillable
-        quantity with its reorder point:
+        Low stock is determined by:
 
         fulfillable < reorder_point
 
-        This tool only reads inventory data and does not modify
-        any records.
+        The reorder point is a prototype operational-analysis
+        field used by this MCP and is not treated as a Trackstar
+        API field.
+
+        This tool only evaluates inventory levels. It does not
+        analyze related returns or determine whether returns can
+        contribute to replenishment.
+
+        This tool is read-only and does not modify any records.
     """
     return warehouse_service.get_low_stock_inventory(warehouse_id)
 
 @mcp.tool()
 def get_pending_returns(warehouse_id: str) -> list[dict] | None:
     """
-     Find pending returns for a specific warehouse.
+    Find returns that are currently pending for a specific warehouse.
+
+    Use this tool when the user specifically wants to inspect
+    pending returns rather than perform a broader warehouse
+    investigation.
 
     Args:
         warehouse_id: The unique ID of the warehouse to investigate.
 
     Returns:
         A list of pending return records.
+
         Returns null if the specified warehouse does not exist.
 
     Notes:
-        Pending returns have one of these statuses:
-        open, in-transit, or receiving.
+        Pending returns currently include returns with these
+        statuses:
 
-        This tool only reads return data and does not modify
-        any records.
+        - open
+        - in-transit
+        - receiving
 
+        This tool reports pending returns but does not determine
+        whether a return can contribute to inventory replenishment.
+        Use analyze_warehouse for relationships between returns
+        and inventory.
+
+        This tool is read-only and does not modify any records.
     """
 
     return warehouse_service.get_pending_returns(warehouse_id)
@@ -133,21 +190,40 @@ def get_pending_returns(warehouse_id: str) -> list[dict] | None:
 @mcp.tool()
 def analyze_warehouse(warehouse_id: str,) -> dict | None:
     """
-    Analyze the operational state of a specific warehouse.
+    Analyze a warehouse's operational state and identify
+    findings that may require human attention.
+
+    Use this tool when the user wants an overall operational
+    assessment of a warehouse rather than a single type of record.
+
+    The analysis considers:
+    - inventory levels relative to reorder points
+    - inventory severity
+    - pending and completed returns
+    - relationships between inventory items and related returns
+    - whether related returns are replenishing, pending, or
+      not currently contributing to replenishment
 
     Args:
         warehouse_id: The unique ID of the warehouse to analyze.
 
     Returns:
-        A structured operational analysis containing warehouse
-        information, inventory analysis, return analysis,
-        inventory-return relationships, and operational findings.
+        A structured operational analysis containing:
+        - warehouse information
+        - inventory analysis
+        - return analysis
+        - inventory-return relationships
+        - operational findings
 
         Returns null if the specified warehouse does not exist.
 
     Notes:
-        This tool only reads operational data and does not modify
-        any records.
+        This tool is read-only and does not modify inventory,
+        returns, warehouse records, or other operational data.
+
+        Findings are based only on the data available through
+        the MCP. The tool does not assume that an operational
+        action has been approved or performed.
     """
     return warehouse_service.analyze_warehouse(warehouse_id)
 
@@ -160,32 +236,35 @@ def analyze_warehouse(warehouse_id: str,) -> dict | None:
 )
 def warehouse_operations_review(warehouse_id: str) -> str:
     return f"""
-Review the operational state of warehouse '{warehouse_id}'.
+            Review the operational state of warehouse '{warehouse_id}'.
 
-Use the warehouse analysis to identify the most important
-operational findings.
+            Use the available warehouse analysis to identify the most
+            important operational findings.
 
-Pay particular attention to:
-- inventory below reorder points
-- critically low inventory
-- returns that are still pending and cannot currently contribute
-  to replenishment
-- returns received in damaged condition
-- returns that have been successfully restocked and can contribute
-  to replenishment
-- relationships between inventory conditions and related returns
+            Pay particular attention to:
+            - inventory below reorder points
+            - critically low inventory
+            - returns that are still pending and cannot currently
+              contribute to replenishment
+            - returns received in damaged condition
+            - returns that have been successfully restocked and can
+              contribute to replenishment
+            - relationships between inventory conditions and related returns
 
-For each important issue:
-- explain what is happening
-- explain why it matters
-- use the available evidence from the analysis
+            For each important finding:
+            - explain what is happening
+            - explain why it matters
+            - support the explanation using the available evidence
 
-Prioritize findings by operational significance rather than
-simply listing every record.
+            Prioritize findings by operational significance rather than
+            simply listing every record.
 
-Do not assume that any recommended action has been approved.
-Keep the human operator in the decision loop.
-"""
+            Only make conclusions supported by the available warehouse data.
+            Do not assume that an action has been approved, performed, or
+            is possible unless the available data establishes it.
+
+            Keep the human operator in the decision loop.
+    """
 
 if __name__ == "__main__":
     mcp.run()
