@@ -83,10 +83,10 @@ class WareHouseService:
             "shortfall": max(reorder_point - fulfillable, 0),
         }
 
-    def _analyze_warehouse_inventory(self, warehouse_id: str) -> list [dict] | None:
+    def _analyze_warehouse_inventory(self, warehouse_id: str) -> list[dict] | None:
         warehouse = self.get_warehouse(warehouse_id)
 
-        if warehouse == None:
+        if warehouse is None:
             return None
 
         inventory = self.repository.get_inventory_by_warehouse(warehouse_id)
@@ -167,7 +167,7 @@ class WareHouseService:
             for return_item in returns
         ]
 
-    def get_related_returns(self, inventory_id: str, return_analyses: list[dict]) -> list[dict]:
+    def _get_related_returns(self, inventory_id: str, return_analyses: list[dict]) -> list[dict]:
 
         return [
             return_analysis
@@ -339,7 +339,7 @@ class WareHouseService:
     def analyze_warehouse(self, warehouse_id: str) -> dict | None:
         warehouse = self.get_warehouse(warehouse_id)
 
-        if warehouse == None:
+        if warehouse is None:
             return None
 
         inventory_analyses = self._analyze_warehouse_inventory(warehouse_id)
@@ -349,7 +349,7 @@ class WareHouseService:
         relationships = []
 
         for inventory_analysis in inventory_analyses:
-            related_returns = self.get_related_returns(inventory_analysis["inventory_id"], return_analyses)
+            related_returns = self._get_related_returns(inventory_analysis["inventory_id"], return_analyses)
 
             relationship_findings = (self._analyze_inventory_return_relationship(inventory_analysis, related_returns))
 
