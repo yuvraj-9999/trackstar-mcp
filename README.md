@@ -62,19 +62,19 @@ The intended users are companies and operations professionals working with wareh
 A typical interaction follows this flow:
 
 ```text
-Warehouse / Operations User
-            |
-            | Natural-language question
-            v
-         AI Host
-     Claude Desktop / Cursor
-            |
-            | Model Context Protocol
-            v
-Trackstar Warehouse Operations MCP
-            |
-            v
- Warehouse, Inventory and Return Data
+  Warehouse / Operations User
+               │
+               │  Natural-language question
+               ▼
+            AI Host
+      Claude Desktop / Cursor
+               │
+               │  Model Context Protocol
+               ▼
+  Trackstar Warehouse Operations MCP
+               │
+               ▼
+   Warehouse, Inventory and Return Data
 ```
 
 The AI assistant acts as an investigation interface over operational data. The MCP supplies the relevant records and analysis, while the human operator remains responsible for deciding what action to take.
@@ -86,21 +86,21 @@ The current implementation is read-only. It does not approve purchases, modify i
 Trackstar addresses the challenge of connecting fragmented supply-chain systems and normalizing their data. This project focuses on making normalized operational data accessible through an AI-native interface.
 
 ```text
-Fragmented Supply-Chain Systems
-              |
-              v
-          Trackstar
-   Connectivity + Normalization
-              |
-              v
-     Normalized Operational Data
-              |
-              v
- Trackstar Warehouse Operations MCP
-      AI-native investigation
-              |
-              v
-          AI Assistant
+  Fragmented Supply-Chain Systems
+                 │
+                 ▼
+             Trackstar
+      Connectivity + Normalization
+                 │
+                 ▼
+        Normalized Operational Data
+                 │
+                 ▼
+    Trackstar Warehouse Operations MCP
+         AI-native investigation
+                 │
+                 ▼
+             AI Assistant
 ```
 
 The distinction is important: this prototype does not reproduce Trackstar's integration infrastructure or connect to its production API. It demonstrates how an MCP server can operate over a normalized warehouse data model.
@@ -117,19 +117,15 @@ The analysis considers inventory levels, reorder thresholds, return statuses, re
 
 ```text
 Warehouse
-   |
-   +---- Inventory
-   |       |
-   |       +---- Fulfillable quantity
-   |       +---- Reorder point
-   |       +---- Inventory severity
-   |
-   +---- Returns
-           |
-           +---- Return status
-           +---- Associated inventory
-           +---- Receiving condition
-           +---- Restocking information
+├── Inventory
+│   ├── Fulfillable quantity
+│   ├── Reorder point
+│   └── Inventory severity
+└── Returns
+    ├── Return status
+    ├── Associated inventory
+    ├── Receiving condition
+    └── Restocking information
 ```
 
 The key capability is cross-entity reasoning. A low-stock finding becomes more informative when the assistant can determine whether a related return is still in transit, contains damaged units, or has already been restocked.
@@ -143,27 +139,27 @@ The project uses a layered architecture that separates the MCP interface, domain
 ```text
                     AI Host
                Claude / Cursor
-                       |
-                       | MCP
-                       v
-              +------------------+
-              |    server.py     |
-              |   MCP Interface  |
-              +------------------+
-                       |
-                       v
-              +------------------+
-              | WarehouseService |
-              |  Business Logic  |
-              +------------------+
-                       |
-                       v
-              +------------------+
-              |  MockRepository  |
-              |    Data Access   |
-              +------------------+
-                       |
-                       v
+                       │
+                       │  MCP
+                       ▼
+              ┌──────────────────┐
+              │    server.py     │
+              │   MCP Interface  │
+              └──────────────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │ WarehouseService │
+              │  Business Logic  │
+              └──────────────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │  MockRepository  │
+              │    Data Access   │
+              └──────────────────┘
+                       │
+                       ▼
                  Mock JSON Data
 ```
 
@@ -465,20 +461,20 @@ For a shared organizational deployment, the server could instead be exposed thro
 A possible architecture is:
 
 ```text
-AI Host
-   |
-   | Streamable HTTP
-   v
-MCP Server
-   |
-   v
-Service Layer
-   |
-   v
-Trackstar-backed Repository
-   |
-   v
-Trackstar API
+        AI Host
+           │
+           │  Streamable HTTP
+           ▼
+        MCP Server
+           │
+           ▼
+        Service Layer
+           │
+           ▼
+  Trackstar-backed Repository
+           │
+           ▼
+        Trackstar API
 ```
 
 A shared deployment would require appropriate authentication, authorization, secure secret management, logging, and tenant isolation.
@@ -517,11 +513,11 @@ A production-oriented implementation could replace the mock repository with a re
 
 ```text
 WarehouseService
-       |
-       v
+       │
+       ▼
 MockRepository
-       |
-       v
+       │
+       ▼
 JSON files
 ```
 
@@ -529,14 +525,14 @@ JSON files
 
 ```text
 WarehouseService
-       |
-       v
+       │
+       ▼
 TrackstarRepository
-       |
-       v
+       │
+       ▼
 Trackstar API
-       |
-       v
+       │
+       ▼
 Connected supply-chain systems
 ```
 
